@@ -1,0 +1,16 @@
+{
+    "name": "nodelearn",
+    "version": "1.0.0",
+    "description": "A project to learn Node.js",
+    "main": "Backend/server.js",
+    "scripts": {
+        "start": "node Backend/server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {},
+    "devDependencies": {},
+    "type": "module"
+}

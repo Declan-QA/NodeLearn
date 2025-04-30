@@ -1,31 +1,35 @@
-import http from "http";
-import fs from "fs";
+import express from 'express';
 
-const server = http.createServer((request,response)=>{
-    const routes_dict = {"/":"pages/index.html","/about":"pages/about.html"}
-    response.setHeader("Content-Type","html")
-    let path = ""
-    const baseAssetspath="./Frontend/"
-    let nextpage = routes_dict[request.url]
+// express app
+const app = express();
 
-    if (nextpage){
-        path = baseAssetspath + nextpage
-    } else {
-        path = baseAssetspath + "pages/404.html"
-    }
+app.set("view engine","ejs")
 
-    fs.readFile(path,(err,data)=>{
-        if (err){
-            console.log(err)
-            response.end()
-        } else {
-            console.log(path)
-            response.end(data)
-        }
-    })
+// listen for requests
+app.listen(3000);
+
+app.get('/', (req, res) => {
+  const blogs = [
+    {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+    {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+    {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'}
+  ];
+  res.render("index",{title: "Home",blogs})
+});
+
+app.get('/about', (req, res) => {
+  res.render("about",{title: "About"})
+});
+
+// redirects
+app.get('/about-us', (req, res) => {
+  res.redirect('/about');
+});
+
+app.get('/blogs/create',(req,res)=>{
+  res.render("create",{title: "Create"})
 })
-
-server.listen(3000,"localhost",()=>{
-    console.log("Listening for requests on port 3000")
-})
-
+// 404 page
+app.use((req, res) => {
+  res.status(404).render("404",{title: "404"});
+});

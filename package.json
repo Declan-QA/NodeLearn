@@ -4,13 +4,17 @@
     "description": "A project to learn Node.js",
     "main": "Backend/server.js",
     "scripts": {
-        "start": "node Backend/server.js",
+        "start": "nodemon Backend/server.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
-    "dependencies": {},
-    "devDependencies": {},
+    "dependencies": {
+        "ejs": "^3.1.10",
+        "express": "^5.1.0",
+        "lodash": "^4.17.21",
+        "nodemon": "^3.1.10"
+    },
     "type": "module"
 }

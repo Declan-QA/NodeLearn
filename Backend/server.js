@@ -8,6 +8,8 @@ app.set("view engine","ejs")
 // listen for requests
 app.listen(3000);
 
+
+
 app.get('/', (req, res) => {
   const blogs = [
     {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
@@ -29,6 +31,14 @@ app.get('/about-us', (req, res) => {
 app.get('/blogs/create',(req,res)=>{
   res.render("create",{title: "Create"})
 })
+
+app.use((req, res) => {
+  console.log('new request made:');
+  console.log('host:   ', req.hostname);
+  console.log('path:   ', req.path);
+  console.log('method: ', req.method);
+});
+
 // 404 page
 app.use((req, res) => {
   res.status(404).render("404",{title: "404"});

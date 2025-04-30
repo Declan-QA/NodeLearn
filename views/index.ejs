@@ -4,7 +4,6 @@
    <%- include("./partials/nav.ejs")  %>
     <div class="blogs content">
         <h2>All Blogs</h2>
-        <% console.log(blogs) %>
         <% if (blogs.length){ %>
             <% blogs.forEach(blog => {%>
                 <h3 class="title"><%= blog.title %></h3>

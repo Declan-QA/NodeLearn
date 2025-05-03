@@ -2,10 +2,9 @@
     "name": "nodelearn",
     "version": "1.0.0",
     "description": "A project to learn Node.js",
-    "main": "Backend/server.js",
+    "main": "server.js",
     "scripts": {
-        "start": "nodemon Backend/server.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "nodemon server.js"
     },
     "keywords": [],
     "author": "",
@@ -14,7 +13,8 @@
         "ejs": "^3.1.10",
         "express": "^5.1.0",
         "lodash": "^4.17.21",
-        "nodemon": "^3.1.10"
+        "nodemon": "^3.1.10",
+        "sqlite3": "^5.1.7"
     },
     "type": "module"
 }

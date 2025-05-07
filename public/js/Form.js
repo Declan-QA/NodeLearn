@@ -1,7 +1,6 @@
-const form = document.getElementById('user-form');
+const form = document.getElementById("user-form")
 
 form.addEventListener('submit', function(event) {
     event.preventDefault();
-    const forminfo = new FormData(form);
-    
+    const forminfo = new FormData(form); 
 });

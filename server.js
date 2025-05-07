@@ -1,47 +1,26 @@
 import express from 'express';
+import path from "path";
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // express app
 const app = express();
 
-app.set("view engine","ejs")
 
 // listen for requests
 app.listen(3000);
 
-app.use(express.static("public"))
+app.use('/public/', express.static(path.join(__dirname, './public')))
 
 
-
-app.get('/', (req, res) => {
-  const blogs = [
-    {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-    {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-    {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'}
-  ];
-  res.render("index",{title: "Home",blogs})
-});
-
-app.get('/about', (req, res) => {
-  res.render("about",{title: "About"})
-});
-
-// redirects
-app.get('/about-us', (req, res) => {
-  res.redirect('/about');
-});
-
-app.get('/blogs/create',(req,res)=>{
-  res.render("create",{title: "Create"})
+app.get("/",function(request,response){
+  response.sendFile(path.join(__dirname, "/pages/index.html"));
 })
 
-app.use((req, res) => {
-  console.log('new request made:');
-  console.log('host:   ', req.hostname);
-  console.log('path:   ', req.path);
-  console.log('method: ', req.method);
-});
+
 
 // 404 page
 app.use((req, res) => {
-  res.status(404).render("404",{title: "404"});
+  res.sendFile(path.join(__dirname, "/public/pages/index.html"));
 });

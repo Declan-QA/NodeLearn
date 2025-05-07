@@ -12,7 +12,8 @@ export const createProject = async (db, project_name) => {
     console.log(err);
   }
 };
-
+export const checkReceivingEmail = async() => {}
+export const checkProjectname = async() => {}
 export const createRecipient = async (db, receiver_email) => {
   try {
     await basefuncs.execute(db, `INSERT INTO receivers VALUES(?,?)`, [

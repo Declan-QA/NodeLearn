@@ -4,7 +4,9 @@
     "description": "A project to learn Node.js",
     "main": "server.js",
     "scripts": {
-        "start": "nodemon server.js"
+        "start": "node server.js",
+        "dev": "nodemon server.js",
+        "sql": "nodemon connect.js"
     },
     "keywords": [],
     "author": "",

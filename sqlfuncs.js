@@ -12,8 +12,24 @@ export const createProject = async (db, project_name) => {
     console.log(err);
   }
 };
-export const checkReceivingEmail = async() => {}
-export const checkProjectname = async() => {}
+export const checkReceivingEmail = async(db,email) => {
+  try {
+    const result = await basefuncs.execute(db,"SELECT id from receivers WHERE email = ?",[email])
+    return result
+  } catch (error) {
+    console.log(error)
+    return
+  }
+}
+export const checkProjectname = async(db,name) => {
+  try {
+    const result = await basefuncs.fetchFirst(db,"SELECT id from projects WHERE name = ?",[name])
+    return result
+  } catch (error) {
+    console.log(error)
+    return
+  }
+}
 export const createRecipient = async (db, receiver_email) => {
   try {
     await basefuncs.execute(db, `INSERT INTO receivers VALUES(?,?)`, [
@@ -22,6 +38,7 @@ export const createRecipient = async (db, receiver_email) => {
     ]);
   } catch (err) {
     console.log(err);
+    return
   }
 };
 
@@ -36,6 +53,7 @@ export const createUser = async (db,userdata) => {
     );
   } catch (err) {
     console.log(err);
+    return
   }
 };
 
@@ -45,11 +63,12 @@ export const deleteUser = async (db, id) => {
     await basefuncs.DeleteData(db, "DELETE FROM employees WHERE id=?", [id]);
   } catch (error) {
     console.log(error);
+    return
   }
 };
 
 //update
-export const updateUserPassword = async (db, email, newpassword) => {
+export const changePassword = async (db, email, newpassword) => {
   try {
     await execute(db, "UPDATE employees SET password = ? WHERE email=?", [
       newpassword,
@@ -57,5 +76,6 @@ export const updateUserPassword = async (db, email, newpassword) => {
     ]);
   } catch (error) {
     console.log(error);
+    return
   }
 };

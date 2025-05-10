@@ -6,9 +6,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 //sql
-import {setUp} from "./connect.js";
+import * as sqlfuncs from "./sqlfuncs.js"
 import sqlite3 from "sqlite3";
-import * as sql_funcs from "./sqlfuncs.js"
 
 function connected(err) {
   if (err) {
@@ -37,13 +36,12 @@ app.use(express.urlencoded());
 
 app.get("/",async function(request,response){
   response.sendFile(path.join(__dirname, "public/pages/index.html"));
-  await setUp(database)
+  await sqlfuncs.setUp(database)
 })
 
 app.post("/checkform", async (req, res) => {
   const { recipient_email, project_name } = req.body;
-  const foundName = await sql_funcs.checkProjectname(database, project_name);
-  const foundEmail = await sql_funcs.checkReceivingEmail(database, recipient_email);
+  const [foundName,foundEmail] = sqlfuncs.checkPrev(database,project_name,recipient_email)
   if (foundName && foundEmail) {
     return res.json({ valid: true });
   }
@@ -51,15 +49,19 @@ app.post("/checkform", async (req, res) => {
   const response_json = { valid: false };
 
   if (!foundName) {
-    response_json.project_name = `<p><small class="error">You must enter an existing project</small></p>`;
+    response_json.project_name = `<br id="errornamebr"><small id="errorname" class="error">You must enter an existing project</small>`;
   }
 
   if (!foundEmail) {
-    response_json.recipient_email = `<p><small class="error">You may have entered the wrong URL</small></p>`;
+    response_json.recipient_email = `<br id="erroremailbr"><small id= "erroremail" class="error">You must enter an existing email</small>`;
   }
 
   res.json(response_json);
 });
+
+app.post("/saveUser",async(req,res) =>{
+  await sqlfuncs.createUser(database,Object.values(req.body))
+})
 
 
 // 404 page

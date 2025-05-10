@@ -1,16 +1,16 @@
 import sqlite3 from "sqlite3";
 import * as sqlfuncs from "./sqlfuncs.js";
 
-// function connected(err) {
-//   if (err) {
-//     console.log(err.message);
-//     return;
-//   } else {
-//     console.log("Sqlite Query success");
-//   }
-// }
-// const sql3 =  sqlite3.verbose()
-// let database =new sql3.Database("./mydata.db", connected);
+function connected(err) {
+  if (err) {
+    console.log(err.message);
+    return;
+  } else {
+    console.log("Sqlite Query success");
+  }
+}
+const sql3 =  sqlite3.verbose()
+let database =new sql3.Database("./mydata.db", connected);
 
 export async function setUp(DB) {
   await DB.exec("PRAGMA foreign_keys = ON;");
@@ -46,18 +46,15 @@ export async function setUp(DB) {
 `);
 }
 
-// await sqlfuncs.createProject(DB,"Proj1")
-// await sqlfuncs.createRecipient(DB,"DeptA@gmail.com")
-// await sqlfuncs.createUser(DB,[
-//     'Alice Jones',
-//     '1990-05-10',
-//     "AliceJ@gmail.com",
-//     'alicej',
-//     'securePass123',
-//     'Engineer',
-//     'DeptA@gmail.com',
-//     'Proj1']
-//   );
+
+export async function checkPrev(database,project_name,recipient_email) {
+ const foundName = await sqlfuncs.checkProjectname(database, project_name);
+  const foundEmail = await sqlfuncs.checkReceivingEmail(database, recipient_email);
+  return [foundName,foundEmail]
+}
+await sqlfuncs.createProject(database,"Proj1")
+await sqlfuncs.createRecipient(database,"DeptA@gmail.com")
+
 
 // DB.all("SELECT COUNT(*) as count FROM employee", [], (err, rows) => {
 //   if (err) {

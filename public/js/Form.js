@@ -17,12 +17,11 @@ recipientemail.addEventListener("click", () => {
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-
   const data = {
     recipient_email: recipientemail.value,
     project_name: projectname.value,
   };
-
+  console.log(recipientemail.value)
   // Remove previous errors
  
 
@@ -41,7 +40,7 @@ form.addEventListener("submit", async (e) => {
   }
 
   if (valid){
-    success = saveUser(data)
+    success =await saveUser(data)
   }
 });
 

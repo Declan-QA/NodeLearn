@@ -41,7 +41,7 @@ app.get("/",async function(request,response){
 
 app.post("/checkform", async (req, res) => {
   const { recipient_email, project_name } = req.body;
-  const [foundName,foundEmail] = sqlfuncs.checkPrev(database,project_name,recipient_email)
+  const [foundName,foundEmail] = await sqlfuncs.checkPrev(database,project_name,recipient_email)
   if (foundName && foundEmail) {
     return res.json({ valid: true });
   }

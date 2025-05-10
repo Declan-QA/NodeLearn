@@ -14,7 +14,7 @@ export const createProject = async (db, project_name) => {
 };
 export const checkReceivingEmail = async(db,email) => {
   try {
-    const result = await basefuncs.execute(db,"SELECT id from receivers WHERE email = ?",[email])
+    const result = await basefuncs.fetchFirst(db,"SELECT id from receivers WHERE email = ?",[email])
     return result
   } catch (error) {
     console.log(error)

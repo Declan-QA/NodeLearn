@@ -30,13 +30,14 @@ console.log("Please open the url: http://localhost:3000")
 app.listen(3000);
 
 app.use('/public/', express.static(path.join(__dirname, './public')))
+
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded());
 
 
 app.get("/",async function(request,response){
-  response.sendFile(path.join(__dirname, "public/pages/index.html"));
-  await sqlfuncs.setUp(database)
+  response.sendFile(path.join(__dirname, "public/pages/register.html"));
+  sqlfuncs.setUp(database)
 })
 
 app.post("/checkform", async (req, res) => {
@@ -60,9 +61,26 @@ app.post("/checkform", async (req, res) => {
 });
 
 app.post("/saveUser",async(req,res) =>{
-  await sqlfuncs.createUser(database,Object.values(req.body))
+  const success = await sqlfuncs.createUser(database,Object.values(req.body))
+  res.json(success)
 })
 
+app.post("/checkformlogin",async (req, res) => {
+  const { email, password } = req.body;
+  const logincheck = await sqlfuncs.checkLoginDetails(database,email,password)
+
+  if (logincheck.success){
+    res.json({"valid":"true"})
+  } else{
+    res.json(logincheck.reason)
+  }
+});
+
+
+app.post("/allowlogin",async(req,res) =>{
+  const success = await sqlfuncs.createUser(database,Object.values(req.body))
+  res.json(success)
+})
 
 // 404 page
 app.use((req, res) => {

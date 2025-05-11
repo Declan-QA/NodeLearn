@@ -47,7 +47,7 @@ form.addEventListener("submit", async (e) => {
 });
 
 async function checkForm(formdata) {
-  const response = await fetch("/checkform", {
+  const response = await fetch("/checkformlogin", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(formdata),
@@ -57,7 +57,7 @@ async function checkForm(formdata) {
 
 
 async function saveUser(userdata) {
-  const response = await fetch("/saveUser", {
+  const response = await fetch("/allowlogin", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(userdata),

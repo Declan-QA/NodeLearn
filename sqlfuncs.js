@@ -51,9 +51,10 @@ export const createUser = async (db,userdata) => {
           VALUES(?,?,?,?,?,?,?,?,?)`,
       stored
     );
+    return {"success":"true"}
   } catch (err) {
     console.log(err);
-    return
+    return {"success":"false"}
   }
 };
 
@@ -121,3 +122,20 @@ export async function checkPrev(database,project_name,recipient_email) {
   const foundEmail = await checkReceivingEmail(database, recipient_email);
   return [foundName,foundEmail]
 }
+
+
+export async function checkLoginDetails(database,email,password){
+  const failstate= {"success":"false","reason":"Password or Email may not exist"}
+  const passstate = {"success":"true"}
+  const emailexists = await basefuncs.fetchFirst(database,"SELECT id FROM employees WHERE email = ?",[email])
+  if (!emailexists){
+    return failstate
+  } else {
+    const passwordexists= await basefuncs.fetchFirst(database,"SELECT id FROM employees WHERE email = ? AND password = ?",[emailexists,password])
+    if (passwordexists){
+      return passstate
+    } else{
+      return failstate
+    }
+  }
+} 

@@ -1,29 +1,44 @@
-const collection = document.getElementsByClassName("error");
 const form = document.getElementById("user-form");
 const recipientemail = document.getElementById("recipient_email");
 const projectname = document.getElementById("project_name");
 
 
-
-projectname.addEventListener("click", () => {
+const clearnameerror = () => {
   document.getElementById("errorname").remove()
   document.getElementById("errornamebr").remove()
-});
-
-recipientemail.addEventListener("click", () => {
+}
+const clearemailerror = () => {
   document.getElementById("erroremail").remove()
   document.getElementById("erroremailbr").remove()
+}
+
+projectname.addEventListener("focus", () => {
+  clearnameerror()
+});
+
+recipientemail.addEventListener("focus", () => {
+  clearemailerror()
 });
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  const userdata = new FormData(form)
+  
   const data = {
     recipient_email: recipientemail.value,
     project_name: projectname.value,
   };
-  const userdata = new FormData(form)
+ 
   const result = await checkForm(data);
   const { valid } = result;
+
+  if (document.getElementById("errorname")){
+    clearnameerror()
+  }
+
+  if (document.getElementById("erroremail")){
+    clearemailerror()
+  }
 
   if (!valid) {
     if (result.recipient_email) {
@@ -35,7 +50,9 @@ form.addEventListener("submit", async (e) => {
   } else {
     let send_data=  []
     for (const value of userdata.values()) {
-      send_data.push(value)
+      if (value != data.recipient_email && value != data.project_name){
+          send_data.push(value)
+      }
     }
     const res = await saveUser(send_data)
     if (res.success){

@@ -30,6 +30,17 @@ export const checkProjectname = async(db,name) => {
     return
   }
 }
+
+export const checkUsername = async(db,name) => {
+  try {
+    const result = await basefuncs.fetchFirst(db,"SELECT id FROM employees WHERE email = ?",[name])
+    return result
+  } catch (error) {
+    console.log(error)
+    return
+  }
+}
+
 export const createRecipient = async (db, receiver_email) => {
   try {
     await basefuncs.execute(db, `INSERT INTO receivers VALUES(?,?)`, [
@@ -48,7 +59,7 @@ export const createUser = async (db,userdata) => {
     await basefuncs.execute(
       db,
       `INSERT INTO employees 
-          VALUES(?,?,?,?,?,?,?,?,?)`,
+          VALUES(?,?,?,?,?,?,?)`,
       stored
     );
     return {"success":"true"}
@@ -86,34 +97,43 @@ export async function setUp(DB) {
   await DB.exec("PRAGMA foreign_keys = ON;");
 
   await DB.run(`
-  CREATE TABLE IF NOT EXISTS projects (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL UNIQUE
+    CREATE TABLE IF NOT EXISTS employees (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      full_name TEXT UNIQUE,
+      date_of_birth DATE,
+      email TEXT UNIQUE,
+      username TEXT UNIQUE,
+      password TEXT,
+      job_title TEXT
+    )
+  `);
+
+  await DB.run(
+    `CREATE TABLE IF NOT EXISTS projects (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL UNIQUE
+    )
+    `
   )
-`);
 
   await DB.run(`
-    CREATE TABLE IF NOT EXISTS receivers (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      email TEXT NOT NULL UNIQUE
-    )
-`);
-
- await DB.run(`
-  CREATE TABLE IF NOT EXISTS employees (
+  CREATE TABLE IF NOT EXISTS receivers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    full_name TEXT,
-    date_of_birth DATE,
-    email TEXT,
-    username TEXT,
-    password TEXT,
-    job_title TEXT,
-    recipient_email TEXT,
-    project_name TEXT,
-    FOREIGN KEY (recipient_email) REFERENCES receivers(email),
-    FOREIGN KEY (project_name) REFERENCES projects(name)
+    email TEXT NOT NULL UNIQUE
   )
-`);
+  `)
+
+  await DB.run(`
+  CREATE TABLE IF NOT EXISTS senders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id INTEGER NOT NULL,
+    receiver_id INTEGER NOT NULL,
+    FOREIGN KEY (project_id) REFERENCES projects(id),
+    FOREIGN KEY (receiver_id) REFERENCES receivers(id),
+    UNIQUE(project_id, receiver_id)
+  ) 
+  `)
+
 }
 
 
@@ -125,7 +145,7 @@ export async function checkPrev(database,project_name,recipient_email) {
 
 
 export async function checkLoginDetails(database,email,password){
-  const failstate= {"success":"false","reason":"Password or Email may not exist"}
+  const failstate= {"success":false,"reason":"Password or Email may not exist"}
   const passstate = {"success":"true"}
   const emailexists = await basefuncs.fetchFirst(database,"SELECT id FROM employees WHERE email = ?",[email])
   if (!emailexists){

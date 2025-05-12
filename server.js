@@ -40,9 +40,15 @@ app.get("/",async function(request,response){
   sqlfuncs.setUp(database)
 })
 
+app.get("/login",async function(request,response){
+  response.sendFile(path.join(__dirname, "public/pages/login.html"));
+  sqlfuncs.setUp(database)
+})
+
 app.post("/checkform", async (req, res) => {
   const { recipient_email, project_name } = req.body;
   const [foundName,foundEmail] = await sqlfuncs.checkPrev(database,project_name,recipient_email)
+  
   if (foundName && foundEmail) {
     return res.json({ valid: true });
   }
@@ -61,6 +67,8 @@ app.post("/checkform", async (req, res) => {
 });
 
 app.post("/saveUser",async(req,res) =>{
+  console.log(req.body)
+  const userid = await sqlfuncs.checkUsername(req.body.username)
   const success = await sqlfuncs.createUser(database,Object.values(req.body))
   res.json(success)
 })
@@ -68,11 +76,10 @@ app.post("/saveUser",async(req,res) =>{
 app.post("/checkformlogin",async (req, res) => {
   const { email, password } = req.body;
   const logincheck = await sqlfuncs.checkLoginDetails(database,email,password)
-
   if (logincheck.success){
     res.json({"valid":"true"})
   } else{
-    res.json(logincheck.reason)
+    res.json({"valid":"false","reason":`<br id="errorloginbr"><small id= "errorlogin" class="error">${logincheck.reason}</small>`})
   }
 });
 

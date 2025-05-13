@@ -37,12 +37,15 @@ app.use(express.urlencoded());
 
 app.get("/",async function(request,response){
   response.sendFile(path.join(__dirname, "public/pages/register.html"));
-  sqlfuncs.setUp(database)
+  await sqlfuncs.setUp(database)
 })
 
 app.get("/login",async function(request,response){
   response.sendFile(path.join(__dirname, "public/pages/login.html"));
-  sqlfuncs.setUp(database)
+})
+
+app.get("/home",async function(request,response){
+  response.sendFile(path.join(__dirname, "public/pages/home.html"));
 })
 
 app.post("/checkform", async (req, res) => {
@@ -68,7 +71,6 @@ app.post("/checkform", async (req, res) => {
 
 app.post("/saveUser",async(req,res) =>{
   console.log(req.body)
-  const userid = await sqlfuncs.checkUsername(req.body.username)
   const success = await sqlfuncs.createUser(database,Object.values(req.body))
   res.json(success)
 })
@@ -85,8 +87,7 @@ app.post("/checkformlogin",async (req, res) => {
 
 
 app.post("/allowlogin",async(req,res) =>{
-  const success = await sqlfuncs.createUser(database,Object.values(req.body))
-  res.json(success)
+  res.redirect("/home")
 })
 
 // 404 page

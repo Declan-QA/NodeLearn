@@ -33,7 +33,7 @@ export const checkProjectname = async(db,name) => {
 
 export const checkUsername = async(db,name) => {
   try {
-    const result = await basefuncs.fetchFirst(db,"SELECT id FROM employees WHERE email = ?",[name])
+    const result = await basefuncs.fetchFirst(db,"SELECT id FROM employees WHERE username = ?",[name])
     return result
   } catch (error) {
     console.log(error)
@@ -59,7 +59,7 @@ export const createUser = async (db,userdata) => {
     await basefuncs.execute(
       db,
       `INSERT INTO employees 
-          VALUES(?,?,?,?,?,?,?)`,
+          VALUES(?,?,?,?,?,?,?,?,?)`,
       stored
     );
     return {"success":"true"}
@@ -68,6 +68,8 @@ export const createUser = async (db,userdata) => {
     return {"success":"false"}
   }
 };
+
+
 
 //delete
 export const deleteUser = async (db, id) => {
@@ -104,7 +106,11 @@ export async function setUp(DB) {
       email TEXT UNIQUE,
       username TEXT UNIQUE,
       password TEXT,
-      job_title TEXT
+      job_title TEXT,
+      recipient_email,
+      project_name,
+      FOREIGN KEY (recipient_email) REFERENCES receivers(email),
+      FOREIGN KEY (project_name) REFERENCES projects(name)
     )
   `);
 
@@ -121,17 +127,6 @@ export async function setUp(DB) {
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL UNIQUE
   )
-  `)
-
-  await DB.run(`
-  CREATE TABLE IF NOT EXISTS senders (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    project_id INTEGER NOT NULL,
-    receiver_id INTEGER NOT NULL,
-    FOREIGN KEY (project_id) REFERENCES projects(id),
-    FOREIGN KEY (receiver_id) REFERENCES receivers(id),
-    UNIQUE(project_id, receiver_id)
-  ) 
   `)
 
 }

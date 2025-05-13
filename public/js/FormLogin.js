@@ -19,7 +19,7 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const data = [email.value,password.value];
   const result = await checkForm(data);
-  console.log(result)
+  
   // const { valid } = result;
 
   // if (!valid) {

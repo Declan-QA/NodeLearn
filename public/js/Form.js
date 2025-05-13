@@ -50,9 +50,7 @@ form.addEventListener("submit", async (e) => {
   } else {
     let send_data=  []
     for (const value of userdata.values()) {
-      if (value != data.recipient_email && value != data.project_name){
-          send_data.push(value)
-      }
+        send_data.push(value)
     }
     const res = await saveUser(send_data)
     if (res.success){

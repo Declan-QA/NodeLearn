@@ -2,16 +2,29 @@ import * as basefuncs from "./basesqlfuncs.js"
 //create
 export const createProject = async (db, project_name) => {
   try {
-    await basefuncs.execute(
-      db,
-      `INSERT INTO projects 
-              VALUES(?,?)`,
-      [null, project_name]
-    );
+    await basefuncs.execute(db, `INSERT INTO projects VALUES(?,?)`, [
+      null,
+      project_name,
+    ]);
   } catch (err) {
     console.log(err);
+    return
   }
 };
+
+
+export const createRecipient = async (db, receiver_email) => {
+  try {
+    await basefuncs.execute(db, `INSERT INTO receivers VALUES(?,?)`, [
+      null,
+      receiver_email,
+    ]);
+  } catch (err) {
+    console.log(err);
+    return
+  }
+};
+
 export const checkReceivingEmail = async(db,email) => {
   try {
     const result = await basefuncs.fetchFirst(db,"SELECT id from receivers WHERE email = ?",[email])
@@ -41,17 +54,7 @@ export const checkUsername = async(db,name) => {
   }
 }
 
-export const createRecipient = async (db, receiver_email) => {
-  try {
-    await basefuncs.execute(db, `INSERT INTO receivers VALUES(?,?)`, [
-      null,
-      receiver_email,
-    ]);
-  } catch (err) {
-    console.log(err);
-    return
-  }
-};
+
 
 export const createUser = async (db,userdata) => {
   try {
@@ -62,10 +65,10 @@ export const createUser = async (db,userdata) => {
           VALUES(?,?,?,?,?,?,?,?,?)`,
       stored
     );
-    return {"success":"true"}
+    return {success:true}
   } catch (err) {
     console.log(err);
-    return {"success":"false"}
+    return {success:false}
   }
 };
 
@@ -81,6 +84,14 @@ export const deleteUser = async (db, id) => {
   }
 };
 
+export const resetemployees = async (db) => {
+  try {
+    await basefuncs.execute(db,`DROP TABLE employees;`)
+  } catch (error) {
+    console.log(error)
+    return error
+  }
+}
 //update
 export const changePassword = async (db, email, newpassword) => {
   try {
@@ -96,26 +107,8 @@ export const changePassword = async (db, email, newpassword) => {
 
 
 export async function setUp(DB) {
-  await DB.exec("PRAGMA foreign_keys = ON;");
-
-  await DB.run(`
-    CREATE TABLE IF NOT EXISTS employees (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      full_name TEXT UNIQUE,
-      date_of_birth DATE,
-      email TEXT UNIQUE,
-      username TEXT UNIQUE,
-      password TEXT,
-      job_title TEXT,
-      recipient_email,
-      project_name,
-      FOREIGN KEY (recipient_email) REFERENCES receivers(email),
-      FOREIGN KEY (project_name) REFERENCES projects(name)
-    )
-  `);
-
-  await DB.run(
-    `CREATE TABLE IF NOT EXISTS projects (
+   await DB.run(`
+    CREATE TABLE IF NOT EXISTS projects (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL UNIQUE
     )
@@ -128,6 +121,24 @@ export async function setUp(DB) {
     email TEXT NOT NULL UNIQUE
   )
   `)
+  
+  await DB.run(`
+    CREATE TABLE IF NOT EXISTS employees (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      full_name TEXT UNIQUE,
+      date_of_birth DATE,
+      email TEXT UNIQUE,
+      username TEXT UNIQUE,
+      password TEXT,
+      job_title TEXT,
+      recipient_email TEXT,
+      project_name TEXT,
+      FOREIGN KEY (recipient_email) REFERENCES receivers(email),
+      FOREIGN KEY (project_name) REFERENCES projects(name)
+    )
+  `);
+
+ 
 
 }
 
@@ -140,17 +151,40 @@ export async function checkPrev(database,project_name,recipient_email) {
 
 
 export async function checkLoginDetails(database,email,password){
-  const failstate= {"success":false,"reason":"Password or Email may not exist"}
-  const passstate = {"success":"true"}
+  const failstate= {"success":false,"reason":"Password or Email may be incorrect"}
+  const passstate = {"success":true}
   const emailexists = await basefuncs.fetchFirst(database,"SELECT id FROM employees WHERE email = ?",[email])
   if (!emailexists){
     return failstate
   } else {
-    const passwordexists= await basefuncs.fetchFirst(database,"SELECT id FROM employees WHERE email = ? AND password = ?",[emailexists,password])
-    if (passwordexists){
+    const passwordexists= await basefuncs.fetchFirst(database,"SELECT id FROM employees WHERE email = ? AND password = ?",[email,password])
+
+    if (passwordexists?.id == emailexists.id){
+      passstate.id = emailexists.id
       return passstate
     } else{
       return failstate
     }
   }
 } 
+
+
+export async function getUserData(database,id){
+  try {
+      const userdata = await basefuncs.fetchFirst(database,`SELECT * FROM employees WHERE id = ?`,[id])
+  return userdata
+  } catch (error) {
+    console.log(error)
+    return
+  }
+}
+
+export async function getAllUserData(database){
+  try {
+      const userdata = await basefuncs.fetchAll(database,`SELECT * FROM employees`)
+  return userdata
+  } catch (error) {
+    console.log(error)
+    return
+  }
+}

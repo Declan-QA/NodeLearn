@@ -9,6 +9,7 @@ const __dirname = path.dirname(__filename);
 import * as sqlfuncs from "./sqlfuncs.js"
 import sqlite3 from "sqlite3";
 
+
 function connected(err) {
   if (err) {
     console.log(err.message);
@@ -18,7 +19,7 @@ function connected(err) {
   }
 }
 const sql3 =  sqlite3.verbose()
-let database =new sql3.Database("./mydata.db", connected);
+const database =new sql3.Database("./mydata.db", connected);
 
 
 // express app
@@ -30,14 +31,17 @@ console.log("Please open the url: http://localhost:3000")
 app.listen(3000);
 
 app.use('/public/', express.static(path.join(__dirname, './public')))
-
+app.use("/js/",express.static(path.join(__dirname,"./public/js")))
+app.use("/styles/",express.static(path.join(__dirname,"./public/styles")))
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded());
-
+await sqlfuncs.setUp(database)
+let userdata;
 
 app.get("/",async function(request,response){
   response.sendFile(path.join(__dirname, "public/pages/register.html"));
-  await sqlfuncs.setUp(database)
+  // await sqlfuncs.createProject(database, "Proj1");
+  // await sqlfuncs.createRecipient(database, "DeptA@gmail.com");
 })
 
 app.get("/login",async function(request,response){
@@ -70,25 +74,31 @@ app.post("/checkform", async (req, res) => {
 });
 
 app.post("/saveUser",async(req,res) =>{
-  console.log(req.body)
   const success = await sqlfuncs.createUser(database,Object.values(req.body))
   res.json(success)
 })
 
+
+
 app.post("/checkformlogin",async (req, res) => {
-  const { email, password } = req.body;
+  const [email, password ] = req.body;
   const logincheck = await sqlfuncs.checkLoginDetails(database,email,password)
   if (logincheck.success){
-    res.json({"valid":"true"})
+    res.json({valid:true,id:logincheck.id})
   } else{
-    res.json({"valid":"false","reason":`<br id="errorloginbr"><small id= "errorlogin" class="error">${logincheck.reason}</small>`})
+    res.json({valid:false,reason:`<br id="errorloginbr"><small id= "errorlogin" class="error">${logincheck.reason}</small>`})
   }
 });
 
-
-app.post("/allowlogin",async(req,res) =>{
-  res.redirect("/home")
+app.get("/userData/:id", async (req,res) =>{
+  const id = req.params.id
+  const alldata = await sqlfuncs.getAllUserData(database)
+  const user = alldata.find((value) => value.id === Number(id));
+  res.json(user)
 })
+
+
+
 
 // 404 page
 app.use((req, res) => {

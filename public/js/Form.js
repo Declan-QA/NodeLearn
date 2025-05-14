@@ -4,12 +4,16 @@ const projectname = document.getElementById("project_name");
 
 
 const clearnameerror = () => {
-  document.getElementById("errorname").remove()
-  document.getElementById("errornamebr").remove()
+if (document.getElementById("errorname")) {
+    document.getElementById("errorname").remove()
+    document.getElementById("errornamebr").remove()
+}
 }
 const clearemailerror = () => {
-  document.getElementById("erroremail").remove()
-  document.getElementById("erroremailbr").remove()
+ if (document.getElementById("erroremail")) {
+   document.getElementById("erroremail").remove()
+   document.getElementById("erroremailbr").remove()
+ }
 }
 
 projectname.addEventListener("focus", () => {
@@ -55,6 +59,7 @@ form.addEventListener("submit", async (e) => {
     const res = await saveUser(send_data)
     if (res.success){
       console.log("Yes")
+      window.location.replace("/home");
     }
   }
 

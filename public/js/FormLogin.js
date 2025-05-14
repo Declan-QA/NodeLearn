@@ -3,8 +3,10 @@ const email = document.getElementById("email");
 const password = document.getElementById("password")
 
 const clearerrors = () => {
-  document.getElementById("errorlogin").remove()
-  document.getElementById("errorloginbr").remove()
+if (document.getElementById("errorlogin")) {
+    document.getElementById("errorlogin").remove()
+    document.getElementById("errorloginbr").remove()
+}
 }
 
 email.addEventListener("focus", () => {
@@ -19,28 +21,13 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const data = [email.value,password.value];
   const result = await checkForm(data);
-  
-  // const { valid } = result;
-
-  // if (!valid) {
-  //   if (result.recipient_email) {
-  //     recipientemail.insertAdjacentHTML("afterend", result.recipient_email);
-  //   }
-  //   if (result.project_name) {
-  //     projectname.insertAdjacentHTML("afterend",result.project_name);
-  //   }
-  // } else {
-  //   let send_data=  []
-  //   for (const value of userdata.values()) {
-  //     send_data.push(value)
-  //   }
-  //   const res = await saveUser(send_data)
-  //   if (res.success){
-  //     console.log("Yes")
-  //   }
-  // }
-
-
+  console.log(result)
+  if (result.valid){
+    localStorage.setItem("id",result.id)
+    window.location.replace("/home");
+  } else {
+    password.insertAdjacentHTML("afterend", result.reason);
+  }
 });
 
 async function checkForm(formdata) {
@@ -53,11 +40,4 @@ async function checkForm(formdata) {
 }
 
 
-async function saveUser(userdata) {
-  const response = await fetch("/allowlogin", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(userdata),
-  });
-  return await response.json();
-}
+

@@ -57,18 +57,9 @@ export async function checkPrev(database, project_name, recipient_email) {
   return [foundName, foundEmail];
 }
 
-await setUp(database)
-await sqlfuncs.createProject(database, "Proj1");
-await sqlfuncs.createRecipient(database, "DeptA@gmail.com");
+// await setUp(database)
+// await sqlfuncs.createProject(database, "Proj1");
+// await sqlfuncs.createRecipient(database, "DeptA@gmail.com");
 
-// DB.all("SELECT COUNT(*) as count FROM employee", [], (err, rows) => {
-//   if (err) {
-//     console.error(err.message);
-//   } else {
-//     console.log(rows);
-//   }
-// });
-
-// const checkemail = await sqlfuncs.checkReceivingEmail(DB,"mail")
-// console.log(checkemail)
-// const name = await sqlfuncs.checkProjectname(DB,"Proj1")
+const userdata = await sqlfuncs.getAllUserData(database)
+console.log(userdata)

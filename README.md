@@ -1,3 +1,4 @@
 # NodeLearn
 Learning Node
-npm run start fir running whole app
+npm run start  running whole app
+npm run dev when developing

@@ -36,7 +36,7 @@ export async function setUp(DB) {
       date_of_birth DATE,
       email TEXT UNIQUE,
       username TEXT UNIQUE,
-      password TEXT UNIQUE,
+      password TEXT,
       job_title TEXT,
       receiver_id INTEGER,
       project_id INTEGER,

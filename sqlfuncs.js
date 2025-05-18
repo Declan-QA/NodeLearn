@@ -1,4 +1,5 @@
 import * as basefuncs from "./basesqlfuncs.js"
+
 //create
 export const createProject = async (db, project_name) => {
   try {
@@ -107,7 +108,8 @@ export const changePassword = async (db, email, newpassword) => {
 
 
 export async function setUp(DB) {
-   await DB.run(`
+  
+   await basefuncs.execute(DB,`
     CREATE TABLE IF NOT EXISTS projects (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL UNIQUE
@@ -115,14 +117,14 @@ export async function setUp(DB) {
     `
   )
 
-  await DB.run(`
+  await basefuncs.execute(DB,`
   CREATE TABLE IF NOT EXISTS receivers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL UNIQUE
   )
   `)
   
-  await DB.run(`
+  await basefuncs.execute(DB,`
     CREATE TABLE IF NOT EXISTS employees (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       full_name TEXT UNIQUE,
@@ -151,8 +153,8 @@ export async function checkPrev(database,project_name,recipient_email) {
 
 
 export async function checkLoginDetails(database,email,password){
-  const failstate= {"success":false,"reason":"Password or Email may be incorrect"}
-  const passstate = {"success":true}
+  const failstate= {"valid":false,"reason":"Password or Email may be incorrect"}
+  const passstate = {"valid":true}
   const emailexists = await basefuncs.fetchFirst(database,"SELECT id FROM employees WHERE email = ?",[email])
   if (!emailexists){
     return failstate
@@ -187,4 +189,9 @@ export async function getAllUserData(database){
     console.log(error)
     return
   }
+}
+
+
+export async function alreadyUsername(username,database){
+  return false
 }

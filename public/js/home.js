@@ -1,7 +1,8 @@
 async function getUserData(id) {
-  const response = await fetch(`/userData/${id}`, {
-    method: "GET",
+  const response = await fetch(`/userData/`, {
+    method: "POST",
     headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(id)
   });
   return await response.json();
 }

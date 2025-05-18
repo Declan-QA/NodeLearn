@@ -23,7 +23,7 @@ form.addEventListener("submit", async (e) => {
   const result = await checkForm(data);
   console.log(result)
   if (result.valid){
-    localStorage.setItem("id",result.id)
+    localStorage.setItem("email",email.value)
     window.location.replace("/home");
   } else {
     password.insertAdjacentHTML("afterend", result.reason);

@@ -90,8 +90,8 @@ app.post("/checkformlogin",async (req, res) => {
   }
 });
 
-app.get("/userData/:id", async (req,res) =>{
-  const id = req.params.id
+app.get("/userData/", async (req,res) =>{
+  const id = req.body.id
   const alldata = await sqlfuncs.getAllUserData(database)
   const user = alldata.find((value) => value.id === Number(id));
   res.json(user)

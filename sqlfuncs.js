@@ -59,12 +59,13 @@ export const checkUsername = async(db,name) => {
 
 export const createUser = async (db,userdata) => {
   try {
-    const stored = [null, ...userdata];
+    userdata.unshift(null)
+    console.log(userdata)
     await basefuncs.execute(
       db,
       `INSERT INTO employees 
           VALUES(?,?,?,?,?,?,?,?,?)`,
-      stored
+      userdata
     );
     return {success:true}
   } catch (err) {
@@ -193,5 +194,11 @@ export async function getAllUserData(database){
 
 
 export async function alreadyUsername(username,database){
-  return false
+  try {
+    const result = await basefuncs.fetchFirst(database,"SELECT email FROM employees WHERE username = ?",[username])
+    return Boolean(result)
+  } catch (error) {
+    console.log(error)
+    return error
+  }
 }

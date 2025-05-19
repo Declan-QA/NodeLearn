@@ -36,12 +36,11 @@ app.use("/styles/",express.static(path.join(__dirname,"./public/styles")))
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded());
 await sqlfuncs.setUp(database)
-let userdata;
+
+
 
 app.get("/",async function(request,response){
   response.sendFile(path.join(__dirname, "public/pages/register.html"));
-  // await sqlfuncs.createProject(database, "Proj1");
-  // await sqlfuncs.createRecipient(database, "DeptA@gmail.com");
 })
 
 app.get("/login",async function(request,response){

@@ -61,5 +61,9 @@ export async function checkPrev(database, project_name, recipient_email) {
 // await sqlfuncs.createProject(database, "Proj1");
 // await sqlfuncs.createRecipient(database, "DeptA@gmail.com");
 
-const userdata = await sqlfuncs.getAllUserData(database)
-console.log(userdata)
+// const userdata = await sqlfuncs.getAllUserData(database)
+// console.log(userdata)
+
+
+const result = await sqlfuncs.alreadyUsername("johndoe",database) 
+console.log(result)

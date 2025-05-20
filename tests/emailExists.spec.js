@@ -1,6 +1,6 @@
 
 import sqlite3 from "sqlite3";
-import {alreadyUsername} from "../sqlfuncs.js";
+import {alreadyEmail} from "../sqlfuncs.js";
 import { expect } from "chai";
 const sql3 =  sqlite3.verbose()
 
@@ -15,20 +15,17 @@ function connected(err) {
 
 
 const database =new sql3.Database("./testdata.db", connected);
-function TestUsername(input,expected){
+function TestEmail(input,expected){
     describe("Test Suite", function () {
-        it("Test for checking username already existimg", async function () {
+        it("Test for checking email already existimg", async function () {
             console.log(`${input} should return ${expected}`)
-            const result = await alreadyUsername(database,input) 
+            const result = await alreadyEmail(database,input) 
             console.log(result)
             expect(result).to.equal(expected)
         });
     });
 }
-//   full_name TEXT UNIQUE,
-//       email TEXT UNIQUE,
-//       username TEXT UNIQUE,
 
-TestUsername("janedoe",false)
-TestUsername("johndoe",false)
-TestUsername("johndoe90",true)
+TestEmail("johndoe@example.com",false)
+TestEmail("johndoe@email.com",false)
+TestEmail("janedoe@example.com",true)

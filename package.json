@@ -7,7 +7,7 @@
         "start": "node server.js",
         "dev": "nodemon server.js",
         "sql": "nodemon connect.js",
-        "test": "mocha ./tests/usernameExists.spec.js",
+        "test": "mocha ./tests/*.spec.js",
         "setup_test": "node ./tests/SetupDb.js"
     },
     "keywords": [],

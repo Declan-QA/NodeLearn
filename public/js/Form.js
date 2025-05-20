@@ -84,3 +84,7 @@ async function saveUser(userdata) {
   });
   return await response.json();
 }
+
+function login(){
+  window.location.replace("/login");
+}

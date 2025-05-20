@@ -204,5 +204,11 @@ export async function alreadyUsername(database,username){
 }
 
 export async function alreadyEmail(database,email){
- return false
+     try {
+    const result = await basefuncs.fetchFirst(database,"SELECT full_name FROM employees WHERE email = ?",[email])
+    return Boolean(result)
+  } catch (error) {
+    console.log(error)
+    return error
+  }
 }

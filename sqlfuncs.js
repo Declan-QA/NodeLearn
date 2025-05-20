@@ -248,6 +248,16 @@ export async function alreadyEmail(database, email) {
     }
 }
 
-export async function alreadyFullname(database, email) {
-    return false;
+export async function alreadyFullname(database, fullname) {
+      try {
+        const result = await basefuncs.fetchFirst(
+            database,
+            "SELECT email FROM employees WHERE lower(full_name) = ?",
+            [fullname.toLowerCase()]
+        );
+        return Boolean(result);
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
 }

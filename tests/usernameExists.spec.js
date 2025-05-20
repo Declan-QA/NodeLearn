@@ -17,7 +17,7 @@ function connected(err) {
 const database =new sql3.Database("./testdata.db", connected);
 function TestUsername(input,expected){
     describe("Test Suite", function () {
-        it("Test for checking username already existimg", async function () {
+        it("Test for checking if username already exists", async function () {
             console.log(`${input} should return ${expected}`)
             const result = await alreadyUsername(database,input) 
             console.log(result)
@@ -25,9 +25,7 @@ function TestUsername(input,expected){
         });
     });
 }
-//   full_name TEXT UNIQUE,
-//       email TEXT UNIQUE,
-//       username TEXT UNIQUE,
+
 
 TestUsername("janedoe",false)
 TestUsername("johndoe",false)

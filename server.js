@@ -35,7 +35,9 @@ app.use("/js/",express.static(path.join(__dirname,"./public/js")))
 app.use("/styles/",express.static(path.join(__dirname,"./public/styles")))
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded());
-// await sqlfuncs.setUp(database)
+await sqlfuncs.setUp(database)
+await sqlfuncs.createProject(database, "Proj1");
+await sqlfuncs.createRecipient(database, "DeptA@gmail.com");
 
 
 

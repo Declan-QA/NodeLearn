@@ -26,6 +26,6 @@ function TestEmail(input,expected){
     });
 }
 
-TestEmail("johndoe@example.com",false)
+TestEmail("johndoe@example.com",true)
 TestEmail("johndoe@email.com",false)
-TestEmail("janedoe@example.com",true)
+TestEmail("janedoe@example.com",false)

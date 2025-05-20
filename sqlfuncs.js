@@ -203,6 +203,6 @@ export async function alreadyUsername(database,username){
   }
 }
 
-export async function alreadyEmail(database,full_name){
-  return false
+export async function alreadyEmail(database,email){
+ return false
 }

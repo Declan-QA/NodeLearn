@@ -35,9 +35,9 @@ app.use("/js/",express.static(path.join(__dirname,"./public/js")))
 app.use("/styles/",express.static(path.join(__dirname,"./public/styles")))
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded());
-await sqlfuncs.setUp(database)
-await sqlfuncs.createProject(database, "Proj1");
-await sqlfuncs.createRecipient(database, "DeptA@gmail.com");
+// await sqlfuncs.setUp(database)
+// await sqlfuncs.createProject(database, "Proj1");
+// await sqlfuncs.createRecipient(database, "DeptA@gmail.com");
 
 
 
@@ -83,18 +83,14 @@ app.post("/saveUser",async(req,res) =>{
 
 app.post("/checkformlogin",async (req, res) => {
   const [email, password ] = req.body;
-  const logincheck = await sqlfuncs.checkLoginDetails(database,email,password)
-  if (logincheck.success){
-    res.json({valid:true,id:logincheck.id})
-  } else{
-    res.json({valid:false,reason:`<br id="errorloginbr"><small id= "errorlogin" class="error">${logincheck.reason}</small>`})
-  }
+  const result = await sqlfuncs.checkLoginDetails(database,email,password)
+  res.json(result)
 });
 
-app.get("/userData/", async (req,res) =>{
-  const id = req.body.id
-  const alldata = await sqlfuncs.getAllUserData(database)
-  const user = alldata.find((value) => value.id === Number(id));
+app.post("/userData", async (req,res) =>{
+  console.log(req.body)
+  const email = req.body.email
+  const user = await sqlfuncs.getUserData(database,email)
   res.json(user)
 })
 

@@ -1,17 +1,17 @@
-async function getUserData(id) {
-  const response = await fetch(`/userData/`, {
+async function getUserData(email) {
+  const response = await fetch(`/userData`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(id)
+    body: `{data: ${email}}`
   });
   return await response.json();
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const userId = localStorage.getItem("id");
-  if (!userId) return;  // Handle the case if there's no ID in localStorage
-
-  const data = await getUserData(userId);
+  const userEmail = localStorage.getItem("email");
+  if (!userEmail) return;  
+  alert(`{email: ${userEmail}}`)
+  const data = await getUserData(userEmail);
 
   // Update the content for specific elements
   document.getElementById("job_title").textContent = data.job_title;
@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("email").textContent = data.email;
   document.getElementById("recipient_email").textContent = data.recipient_email;
 
-  // Update elements with the class "username"
   const usernamerefs = document.getElementsByClassName("username");
   for (let i = 0; i < usernamerefs.length; i++) {
     usernamerefs[i].textContent = data.username;

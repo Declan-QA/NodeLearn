@@ -21,7 +21,6 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const data = [email.value,password.value];
   const result = await checkForm(data);
-  console.log(result)
   if (result.valid){
     localStorage.setItem("email",email.value)
     window.location.replace("/home");

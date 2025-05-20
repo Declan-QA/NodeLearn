@@ -70,7 +70,6 @@ export const createUser = async (db, userdata) => {
     try {
         console.log(userdata);
         userdata.unshift(null);
-        console.log(userdata);
         await basefuncs.execute(
             db,
             `INSERT INTO employees 
@@ -185,7 +184,6 @@ export async function checkLoginDetails(database, email, password) {
         );
 
         if (passwordexists?.id == emailexists.id) {
-            passstate.id = emailexists.id;
             return passstate;
         } else {
             return failstate;
@@ -193,26 +191,14 @@ export async function checkLoginDetails(database, email, password) {
     }
 }
 
-export async function getUserData(database, id) {
+export async function getUserData(database, email) {
     try {
         const userdata = await basefuncs.fetchFirst(
             database,
-            `SELECT * FROM employees WHERE id = ?`,
-            [id]
+            `SELECT full_name, date_of_birth, username, job_title, recipient_email, project_name FROM employees WHERE email = ?`,
+            [email]
         );
-        return userdata;
-    } catch (error) {
-        console.log(error);
-        return;
-    }
-}
-
-export async function getAllUserData(database) {
-    try {
-        const userdata = await basefuncs.fetchAll(
-            database,
-            `SELECT * FROM employees`
-        );
+        userdata.email = email;
         return userdata;
     } catch (error) {
         console.log(error);
@@ -249,7 +235,7 @@ export async function alreadyEmail(database, email) {
 }
 
 export async function alreadyFullname(database, fullname) {
-      try {
+    try {
         const result = await basefuncs.fetchFirst(
             database,
             "SELECT email FROM employees WHERE lower(full_name) = ?",

@@ -68,7 +68,6 @@ export const checkUsername = async (db, name) => {
 
 export const createUser = async (db, userdata) => {
     try {
-        console.log(userdata);
         userdata.unshift(null);
         await basefuncs.execute(
             db,

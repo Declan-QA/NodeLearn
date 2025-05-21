@@ -88,7 +88,6 @@ app.post("/checkformlogin",async (req, res) => {
 });
 
 app.post("/userData", async (req,res) =>{
-  console.log(req.body)
   const email = req.body.email
   const user = await sqlfuncs.getUserData(database,email)
   res.json(user)

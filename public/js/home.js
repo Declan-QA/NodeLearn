@@ -2,7 +2,7 @@ async function getUserData(email) {
   const response = await fetch(`/userData`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: `{data: ${email}}`
+    body: JSON.stringify({email})
   });
   return await response.json();
 }
@@ -10,7 +10,6 @@ async function getUserData(email) {
 document.addEventListener("DOMContentLoaded", async () => {
   const userEmail = localStorage.getItem("email");
   if (!userEmail) return;  
-  alert(`{email: ${userEmail}}`)
   const data = await getUserData(userEmail);
 
   // Update the content for specific elements

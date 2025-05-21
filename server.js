@@ -64,11 +64,11 @@ app.post("/checkform", async (req, res) => {
   const response_json = { valid: false };
 
   if (!foundName) {
-    response_json.project_name = `<br id="errornamebr"><small id="errorname" class="error">You must enter an existing project</small>`;
+    response_json.project_name = `<br id="errornamebr" class="error"><small id="errorname" class="error">You must enter an existing project</small>`;
   }
 
   if (!foundEmail) {
-    response_json.recipient_email = `<br id="erroremailbr"><small id= "erroremail" class="error">You must enter an existing email</small>`;
+    response_json.recipient_email = `<br id="erroremailbr" class="error"><small id= "erroremail" class="error">You must enter an existing email</small>`;
   }
 
   res.json(response_json);

@@ -25,7 +25,7 @@ form.addEventListener("submit", async (e) => {
     localStorage.setItem("email",email.value)
     window.location.replace("/home");
   } else {
-    password.insertAdjacentHTML("afterend", result.reason);
+    password.insertAdjacentHTML("afterend", `<br class="errorloginbr"><p class="errorlogin">${result.reason}</p>`);
   }
 });
 

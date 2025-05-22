@@ -54,23 +54,37 @@ app.get("/home",async function(request,response){
 })
 
 app.post("/checkform", async (req, res) => {
-  const { recipient_email, project_name } = req.body;
+  const { recipient_email, project_name ,email,username,fullname} = req.body;
   const [foundName,foundEmail] = await sqlfuncs.checkPrev(database,project_name,recipient_email)
-  
-  if (foundName && foundEmail) {
+  const alreadyemail = !await sqlfuncs.alreadyEmail(database,email)
+  const alreadyusername = !await sqlfuncs.alreadyUsername(database,username)
+  const alreadyfullname = !await sqlfuncs.alreadyFullname(database,fullname)
+
+  if (foundName && foundEmail && alreadyemail && alreadyusername && alreadyfullname) {
     return res.json({ valid: true });
   }
 
   const response_json = { valid: false };
 
   if (!foundName) {
-    response_json.project_name = `<br id="errornamebr" class="error"><small id="errorname" class="error">You must enter an existing project</small>`;
+    response_json.project_name = `You must enter an existing project`;
   }
 
   if (!foundEmail) {
-    response_json.recipient_email = `<br id="erroremailbr" class="error"><small id= "erroremail" class="error">You must enter an existing email</small>`;
+    response_json.recipient_email = `You must enter an existing email`;
   }
 
+  if (!alreadyemail){
+    response_json.email =  `Email Already Exists`
+  }
+
+  if (!alreadyusername){
+    response_json.username =  `Username Already Exists`
+  }
+
+  if (!alreadyfullname){
+    response_json.fullname =  `Full Name Already Exists`
+  }
   res.json(response_json);
 });
 

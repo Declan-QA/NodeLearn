@@ -2,30 +2,29 @@ const form = document.getElementById("user-form");
 const email = document.getElementById("email");
 const password = document.getElementById("password")
 
-const clearerrors = () => {
-if (document.getElementById("errorlogin")) {
-    document.getElementById("errorlogin").remove()
-    document.getElementById("errorloginbr").remove()
-}
+const clearLocal = () =>{
+  localStorage.clear()
 }
 
-email.addEventListener("focus", () => {
-  clearerrors()
-});
+const clearError = () => {
+  const errorMessages = document.getElementsByClassName("error");
+  if (errorMessages) {
+    document.querySelectorAll(".error").forEach(el => el.remove());
+  }
+};
 
-password.addEventListener("focus", () => {
-  clearerrors()
-});
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  clearError();
   const data = [email.value,password.value];
   const result = await checkForm(data);
+
   if (result.valid){
     localStorage.setItem("email",email.value)
     window.location.replace("/home");
   } else {
-    password.insertAdjacentHTML("afterend", `<br class="errorloginbr"><p class="errorlogin">${result.reason}</p>`);
+    password.insertAdjacentHTML("afterend", `<div class="error">${result.reason}</div>`);
   }
 });
 

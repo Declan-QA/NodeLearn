@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("date_of_birth").textContent = data.date_of_birth;
   document.getElementById("email").textContent = data.email;
   document.getElementById("recipient_email").textContent = data.recipient_email;
-
+  
   const usernamerefs = document.getElementsByClassName("username");
   for (let i = 0; i < usernamerefs.length; i++) {
     usernamerefs[i].textContent = data.username;

@@ -14,4 +14,10 @@ input, button {
 
 .error{
   color: red;
+  font-size: smaller;
 }
+
+#user-form *:not(button){
+  display: block;
+}
+

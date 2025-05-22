@@ -6,32 +6,32 @@
     <title>Register Form</title>
     <link rel="stylesheet" href="styles/styles.css">
 </head>
-<body>
+<body onload="clearLocal()">
     <h1>Register a New User</h1>
     <form id="user-form">
-        <label for="full_name">Full Name:</label><br>
-        <input type="text" id="full_name" name="full_name" value="Jane Smith" required><br><br>
+        <label for="full_name">Full Name:</label>
+        <input type="text" id="full_name" name="full_name"  required onfocus="clearError()">
 
-        <label for="date_of_birth">Date of Birth:</label><br>
-        <input type="date" id="date_of_birth" name="date_of_birth" value="1985-05-15"><br><br>
+        <label for="date_of_birth">Date of Birth:</label>
+        <input type="date" id="date_of_birth" name="date_of_birth>
 
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" value="janesmith@example.com" required><br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required onfocus="clearError()">
 
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username" value="janes85" required><br><br>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"required onfocus="clearError()">
 
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" value="NewPass456!" required><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
 
-        <label for="job_title">Job Title:</label><br>
-        <input type="text" id="job_title" name="job_title" value="Project Manager"><br><br>
+        <label for="job_title">Job Title:</label>
+        <input type="text" id="job_title" name="job_title">
 
-        <label for="recipient_email">Recipient Email:</label><br>
-        <input type="email" id="recipient_email" name="recipient_email" value="DeptA@gmail.com"><br><br>
+        <label for="recipient_email">Recipient Email:</label>
+        <input type="email" id="recipient_email" name="recipient_email" onfocus="clearError()">
 
-        <label for="project_name">Project Name:</label><br>
-        <input type="text" id="project_name" name="project_name" value="Proj1"><br><br>
+        <label for="project_name">Project Name:</label>
+        <input type="text" id="project_name" name="project_name" onfocus="clearError()">
 
         <button type="submit">Register</button>
         <button onclick="login()">Login</button>

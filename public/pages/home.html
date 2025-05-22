@@ -2,35 +2,52 @@
 <html>
 <head>
   <title>Home Page</title>
-  <link rel="stylesheet" href="styles/home.css">
-  <script src="/js/home.js" defer></script>
+  <link rel="stylesheet" href="styles/styles.css" />
+  <link rel="stylesheet" href="styles/home.css" />
+  <script src="/js/home.js"></script>
 </head>
 <body>
-
   <div id="mainContainer">
-    <h1>Welcome <span class="username">Loading...</span></h1>
+  <h1>Welcome <span class="username">Loading...</span></h1>
+    <p>
+        <strong>Username:</strong>
+        <span class="username">Loading...</span>
+    </p>
+    <p>
+        <strong>Job Title:</strong>
+        <span id="job_title">Loading...</span>
+    </p>
+    <p>
+        <strong>Project Name:</strong>
+        <span id="project_name">Loading...</span>
+    </p>
 
-    <p><strong>Username:</strong> <span class="username">Loading...</span></p>
-    <p><strong>Job Title:</strong> <span id="job_title">Loading...</span></p>
-    <p><strong>Project Name:</strong> <span id="project_name">Loading...</span></p>
-
-    <button id="toggleButton" onclick="openModal()">Show More Info</button>
+    <button id="toggleButton" onclick="openModal()">
+        Show More Info
+    </button>
   </div>
-
-  <div id="modalOverlay">
-    <div id="modalBox">
-      <button onclick="closeModal()">Close</button>
-      <h2>More Profile Info</h2>
-      
-      <div><strong>Full Name:</strong> <span id="full_name">Loading...</span></div>
-      <br>
-      <div><strong>Date of Birth:</strong> <span id="date_of_birth">Loading...</span></div>
-      <br>
-      <div><strong>Email:</strong> <span id="email">Loading...</span></div>
-      <br>
-      <div><strong>Recipient Email:</strong> <span id="recipient_email">Loading...</span></div>
+    <div id="modalOverlay">
+      <div id="modalBox">
+        <div class="modalHeader">
+        <h2>More Profile Info</h2>
+        <button onclick="closeModal()">Close</button>
+      </div>
+      <div>
+        <strong>Full Name:</strong>
+        <span id="full_name">Loading...</span>
+      </div>
+      <div>
+        <strong>Date of Birth:</strong>
+        <span id="date_of_birth">Loading...</span>
+      </div>
+      <div>
+        <strong>Email:</strong> <span id="email">Loading...</span>
+      </div>
+      <div>
+        <strong>Recipient Email:</strong>
+        <span id="recipient_email">Loading...</span>
+      </div>
     </div>
   </div>
-
 </body>
 </html>
